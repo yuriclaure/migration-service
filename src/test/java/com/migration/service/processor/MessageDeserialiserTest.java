@@ -1,42 +1,40 @@
 package com.migration.service.processor;
 
 import com.amazonaws.services.sqs.model.Message;
-import com.google.gson.JsonSyntaxException;
 import com.migration.service.dto.MigrationRequest;
 import com.migration.service.exceptions.MigrationFailureException;
-import com.migration.service.processor.MessageDeserialiser.JsonDeserialiser;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.core.Is.is;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 
 public class MessageDeserialiserTest {
-    private static final String WELL_FORMED_MESSAGE = "wellformed";
-    private static final String MALFORMED_MESSAGE = "malformed";
-
-    private MessageDeserialiser messageDeserialiser;
+    private static final String WELL_FORMED_MESSAGE = "2,10.0,5.0,5.0";
+    private static final String MALFORMED_MESSAGE = "3,10.0,5.0";
+    private static final String MESSAGE_ID = "messageId";
 
     @Mock
-    private JsonDeserialiser jsonDeserialiser;
+    private Message sqsMessage;
+
+    private MessageDeserialiser messageDeserialiser;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        messageDeserialiser = new MessageDeserialiser(jsonDeserialiser);
+        when(sqsMessage.getBody()).thenReturn(WELL_FORMED_MESSAGE);
+        when(sqsMessage.getReceiptHandle()).thenReturn(MESSAGE_ID);
+
+        messageDeserialiser = new MessageDeserialiser();
     }
 
     @Test
     public void givenWellformedMessage_whenDeserialising_expectMigrationRequest() {
-        Message sqsMessage = mock(Message.class);
-        MigrationRequest expectedRequest = new MigrationRequest("id", "cobrancaId", 10.0, 5.0, 5.0);
-        when(sqsMessage.getBody()).thenReturn(WELL_FORMED_MESSAGE);
-        when(jsonDeserialiser.deserialise(WELL_FORMED_MESSAGE)).thenReturn(expectedRequest);
+        MigrationRequest expectedRequest = new MigrationRequest(MESSAGE_ID, WELL_FORMED_MESSAGE.split(","));
 
         MigrationRequest migrationRequest = messageDeserialiser.apply(sqsMessage);
 
@@ -50,9 +48,7 @@ public class MessageDeserialiserTest {
 
     @Test(expected = MigrationFailureException.class)
     public void givenMalformedMessage_whenDeserialising_expectException() {
-        Message sqsMessage = mock(Message.class);
         when(sqsMessage.getBody()).thenReturn(MALFORMED_MESSAGE);
-        when(jsonDeserialiser.deserialise(MALFORMED_MESSAGE)).thenThrow(new JsonSyntaxException(""));
 
         messageDeserialiser.apply(sqsMessage);
     }

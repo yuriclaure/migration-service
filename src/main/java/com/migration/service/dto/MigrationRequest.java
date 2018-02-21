@@ -1,23 +1,34 @@
 package com.migration.service.dto;
 
+import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
+
 import java.util.Objects;
 
 public class MigrationRequest {
-    String messageId;
-    String cobrancaId;
-    Double valor;
-    Double desconto;
-    Double total;
+    private String messageId;
+    private int cobrancaId;
+    private Double valor;
+    private Double desconto;
+    private Double total;
 
     public MigrationRequest() {
     }
 
-    public MigrationRequest(String messageId, String cobrancaId, Double valor, Double desconto, Double total) {
+    public MigrationRequest(String messageId, int cobrancaId, Double valor, Double desconto, Double total) {
         this.messageId = messageId;
         this.cobrancaId = cobrancaId;
         this.valor = valor;
         this.desconto = desconto;
         this.total = total;
+    }
+
+    public MigrationRequest(String messageId, String[] row) {
+        this.messageId = messageId;
+        this.cobrancaId = parseInt(row[0]);
+        this.valor = parseDouble(row[1]);
+        this.desconto = parseDouble(row[2]);
+        this.total = parseDouble(row[3]);
     }
 
     public String getMessageId() {
@@ -28,11 +39,11 @@ public class MigrationRequest {
         this.messageId = messageId;
     }
 
-    public String getCobrancaId() {
+    public int getCobrancaId() {
         return cobrancaId;
     }
 
-    public void setCobrancaId(String cobrancaId) {
+    public void setCobrancaId(int cobrancaId) {
         this.cobrancaId = cobrancaId;
     }
 

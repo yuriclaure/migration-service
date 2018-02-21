@@ -18,7 +18,7 @@ public class MessageValidatorTest {
 
     @Test
     public void givenValidMessage_whenValidating_expectTrueReturned() {
-        MigrationRequest validMessage = new MigrationRequest("id", "cobrancaId", 10.0, 5.0, 5.0);
+        MigrationRequest validMessage = new MigrationRequest("id", 2, 10.0, 5.0, 5.0);
 
         boolean result = messageValidator.test(validMessage);
 
@@ -27,7 +27,7 @@ public class MessageValidatorTest {
 
     @Test(expected = MigrationFailureException.class)
     public void givenInvalidMessage_whenValidating_expectExceptionThrown() {
-        MigrationRequest invalidMessage = new MigrationRequest("id", "cobrancaId", 10.0, 5.0, 10.0);
+        MigrationRequest invalidMessage = new MigrationRequest("id", 3, 10.0, 5.0, 10.0);
 
         messageValidator.test(invalidMessage);
     }
