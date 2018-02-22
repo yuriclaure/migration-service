@@ -15,7 +15,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.List;
-import java.util.Objects;
 
 @SpringBootApplication
 public class Application implements CommandLineRunner {
@@ -28,7 +27,11 @@ public class Application implements CommandLineRunner {
     private final MessageProcessor messageProcessor;
 
     @Autowired
-    public Application(AmazonSQSAsync sqs, AwsProperties awsProperties, MessageDeserialiser messageDeserialiser, MessageValidator messageValidator, MessageProcessor messageProcessor) {
+    public Application(AmazonSQSAsync sqs,
+                       AwsProperties awsProperties,
+                       MessageDeserialiser messageDeserialiser,
+                       MessageValidator messageValidator,
+                       MessageProcessor messageProcessor) {
         this.sqs = sqs;
         this.awsProperties = awsProperties;
         this.messageDeserialiser = messageDeserialiser;
@@ -40,10 +43,7 @@ public class Application implements CommandLineRunner {
     public void run(String... args) {
         do {
             try {
-                getMessages().parallelStream()
-                             .map(messageDeserialiser)
-                             .filter(messageValidator)
-                             .forEach(messageProcessor);
+                getMessages().parallelStream().map(messageDeserialiser).filter(messageValidator).forEach(messageProcessor);
             } catch (Exception e) {
                 // ignore exception and retry
             }
@@ -51,15 +51,12 @@ public class Application implements CommandLineRunner {
     }
 
     private List<Message> getMessages() {
-        ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(awsProperties.getQueueUrl()).withMaxNumberOfMessages(10)
-                                                                                                            .withWaitTimeSeconds(5);
-        return sqs.receiveMessage(receiveMessageRequest)
-                  .getMessages();
+        ReceiveMessageRequest receiveMessageRequest = new ReceiveMessageRequest(awsProperties.getQueueUrl()).withMaxNumberOfMessages(10).withWaitTimeSeconds(5);
+        return sqs.receiveMessage(receiveMessageRequest).getMessages();
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args)
-                         .close();
+        SpringApplication.run(Application.class, args).close();
     }
 
 }

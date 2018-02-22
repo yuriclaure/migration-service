@@ -8,8 +8,6 @@ import java.util.Objects;
 
 @DynamoDBTable(tableName = "Cobrancas")
 public class DynamoDbRecord {
-    private static final long serialVersionUID = -1L;
-
     @DynamoDBHashKey(attributeName = "cobrancaId")
     private int cobrancaId;
 
@@ -34,10 +32,6 @@ public class DynamoDbRecord {
 
     public DynamoDbRecord(MigrationRequest migrationRequest) {
         this(migrationRequest.getCobrancaId(), migrationRequest.getValor(), migrationRequest.getDesconto(), migrationRequest.getTotal());
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
     }
 
     public int getCobrancaId() {

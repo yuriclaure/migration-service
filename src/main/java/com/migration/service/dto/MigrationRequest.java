@@ -80,9 +80,11 @@ public class MigrationRequest {
             return false;
         }
         MigrationRequest that = (MigrationRequest) o;
-        return Objects.equals(messageId, that.messageId) && Objects.equals(cobrancaId, that.cobrancaId) && Objects.equals(valor, that.valor) && Objects.equals(desconto,
-                                                                                                                                                               that.desconto) && Objects.equals(total,
-                                                                                                                                                                                                that.total);
+        return Objects.equals(messageId, that.messageId) &&
+               Objects.equals(cobrancaId, that.cobrancaId) &&
+               Objects.equals(valor, that.valor) &&
+               Objects.equals(desconto, that.desconto) &&
+               Objects.equals(total, that.total);
     }
 
     @Override
@@ -93,6 +95,19 @@ public class MigrationRequest {
 
     @Override
     public String toString() {
-        return "MigrationRequest{" + "messageId='" + messageId + '\'' + ", cobrancaId='" + cobrancaId + '\'' + ", valor=" + valor + ", desconto=" + desconto + ", total=" + total + '}';
+        return "MigrationRequest{" +
+               "messageId='" +
+               messageId +
+               '\'' +
+               ", cobrancaId='" +
+               cobrancaId +
+               '\'' +
+               ", valor=" +
+               valor +
+               ", desconto=" +
+               desconto +
+               ", total=" +
+               total +
+               '}';
     }
 }

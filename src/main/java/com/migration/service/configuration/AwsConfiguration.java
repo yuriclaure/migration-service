@@ -33,20 +33,16 @@ public class AwsConfiguration {
 
     @Bean
     public AmazonSQSAsync amazonSQSAsync() {
-        return standard()
-                .withClientConfiguration(clientConfiguration())
-                .withRegion(awsProperties.getRegion())
-                .withCredentials(awsCredentials())
-                .build();
+        return standard().withClientConfiguration(clientConfiguration()).withRegion(awsProperties.getRegion()).withCredentials(awsCredentials()).build();
     }
 
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
         return AmazonDynamoDBClientBuilder.standard()
-                .withClientConfiguration(dynamoDbClientConfiguration())
-                .withCredentials(awsCredentials())
-                .withRegion(awsProperties.getRegion())
-                .build();
+                                          .withClientConfiguration(dynamoDbClientConfiguration())
+                                          .withCredentials(awsCredentials())
+                                          .withRegion(awsProperties.getRegion())
+                                          .build();
     }
 
     @Bean
@@ -56,20 +52,15 @@ public class AwsConfiguration {
 
     @Bean
     public DynamoDBMapperConfig dynamoDBMapperConfig() {
-        return DynamoDBMapperConfig.builder()
-                .withConsistentReads(CONSISTENT)
-                .withSaveBehavior(UPDATE_SKIP_NULL_ATTRIBUTES)
-                .build();
+        return DynamoDBMapperConfig.builder().withConsistentReads(CONSISTENT).withSaveBehavior(UPDATE_SKIP_NULL_ATTRIBUTES).build();
     }
 
     private ClientConfiguration dynamoDbClientConfiguration() {
-        return PredefinedClientConfigurations.dynamoDefault()
-                .withMaxConnections(awsProperties.getClient().getMaxConnections());
+        return PredefinedClientConfigurations.dynamoDefault().withMaxConnections(awsProperties.getClient().getMaxConnections());
     }
 
     private ClientConfiguration clientConfiguration() {
-        return new ClientConfiguration()
-                .withMaxConnections(awsProperties.getClient().getMaxConnections());
+        return new ClientConfiguration().withMaxConnections(awsProperties.getClient().getMaxConnections());
     }
 
 }

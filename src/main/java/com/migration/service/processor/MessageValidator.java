@@ -15,11 +15,18 @@ public class MessageValidator implements Predicate<MigrationRequest> {
     @Override
     public boolean test(MigrationRequest migrationRequest) {
         if (!migrationRequest.getTotal().equals(migrationRequest.getValor() - migrationRequest.getDesconto())) {
-            LOGGER.error("({}) - Failed to validate message values ({} - {} != {})", migrationRequest.getCobrancaId(), migrationRequest.getValor(), migrationRequest.getDesconto(),
+            LOGGER.error("({}) - Failed to validate message values ({} - {} != {})",
+                         migrationRequest.getCobrancaId(),
+                         migrationRequest.getValor(),
+                         migrationRequest.getDesconto(),
                          migrationRequest.getTotal());
             throw new MigrationFailureException("Message has invalid values");
         }
-        LOGGER.info("({}) - Message has correct values ({} - {} = {})", migrationRequest.getCobrancaId(), migrationRequest.getValor(), migrationRequest.getDesconto(), migrationRequest.getTotal());
+        LOGGER.info("({}) - Message has correct values ({} - {} = {})",
+                    migrationRequest.getCobrancaId(),
+                    migrationRequest.getValor(),
+                    migrationRequest.getDesconto(),
+                    migrationRequest.getTotal());
         return true;
     }
 }
