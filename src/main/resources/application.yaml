@@ -8,3 +8,9 @@ script:
   thread-pool-size: 512
   wait-for-tasks-to-complete-on-shutdown: true
   await-termination-seconds: 3600
+
+
+spring:
+  output:
+    ansi:
+      enabled: 'ALWAYS'
